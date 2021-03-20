@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tkinter import *
 import math
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,  
+NavigationToolbar2Tk) 
+from tkinter import *
 from scipy.optimize import fsolve 
 from decimal import Decimal
    
@@ -71,18 +74,24 @@ def bisection():
                 range_end = c
     return c
 def math_stuff():
+    global range_begin
+    global range_end
     answer = bisection()
-    print(" Bisection Method Gives Root At x =",answer)
+    Label(frame, text="Answer:").grid(row=5)
+    Label(frame, text=answer).grid(row=5, column = 1)
+    #print(" Bisection Method Gives Root At x =",answer)
     
     
-    shortcut = fsolve(f,[-1.5, 1.5])
+    shortcut = fsolve(f,[range_begin, range_end])
     print(" These are roots of function given with Fsolve ",shortcut)
     
-    x = np.linspace(-2,2,100)
+    Label(frame, text="Shortcut:").grid(row=6)
+    Label(frame, text=shortcut).grid(row=6, column = 1)    
+ 
+    x = np.linspace(range_begin,range_end,100)
     plt.plot(x,f(x))
-    plt.grid()
+    plt.grid()  
     plt.show()    
-    
 
 ##################### WINDOW #############################################
 root = Tk()
@@ -95,17 +104,17 @@ frame.pack()
 
 Label(frame, text="First exercise").grid(row=0)
 
-Label(frame, text="Input:").grid(row=1)
+Label(frame, text="Function:").grid(row=1)
 function_input = Entry(frame, width = 20, cursor = 'hand2')
 function_input.insert(0,'')
 function_input.grid(row=1 , column=1, pady=10)
 
-Label(frame, text="Input:").grid(row=2)
+Label(frame, text="Tolerance:").grid(row=2)
 tolerance_input = Entry(frame, width = 20, cursor = 'hand2')
 tolerance_input.insert(0,'')
 tolerance_input.grid(row=2 , column=1, pady=10)
 
-Label(frame, text="Input:").grid(row=3)
+Label(frame, text="Range in form (2,2):").grid(row=3)
 range_input = Entry(frame, width = 20, cursor = 'hand2')
 range_input.insert(0,'')
 range_input.grid(row=3 , column=1, pady=10)
