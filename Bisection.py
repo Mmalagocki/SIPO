@@ -9,22 +9,92 @@ from scipy.optimize import fsolve
 from decimal import Decimal
    
 input_function = ""
-X_indexes = []
 tolerance = ""
 range_begin = ""
 range_end = ""
+iterations = ""
 
 ################################# INPUT FUNCTIONS ##################################################################
+def choose_main_condition(chosen_condition):
+    if (chosen_condition == "Get the result based on  tolerance") :
+        tolerance_chosen()
+    elif(chosen_condition == "Get the result based on  number of iterations"):
+        iterations_chosen()
+    else:
+        something_went_wront(chosen_condition)
+
+def something_went_wront(chosen_condition):
+    Label(frame, text="Sorry! Something went wrong. Here is the codition: " + chosen_condition).grid(row=0)
+
+def iterations_chosen():
+    frame = Frame(root)
+    Label(frame, text="You have chosen tolerance").grid(row=0)
+    
+    Label(frame, text="Function:").grid(row=1)
+    function_input = Entry(frame, width = 20, cursor = 'hand2')
+    function_input.insert(0,'')
+    function_input.grid(row=1 , column=1, pady=10)
+    
+    Label(frame, text="Iterations:").grid(row=2)
+    iterations_input = Entry(frame, width = 20, cursor = 'hand2')
+    iterations_input.insert(0,'')
+    iterations_input.grid(row=2 , column=1, pady=10)
+    
+    Label(frame, text="Range in form (2,2):").grid(row=3)
+    range_input = Entry(frame, width = 20, cursor = 'hand2')
+    range_input.insert(0,'')
+    range_input.grid(row=3 , column=1, pady=10)
+     
+    Button = Button(frame, text = "Submit", command = lambda: set_iterations_values(function_input.get(), 
+                                                                               iterations_input.get(), 
+                                                                               range_input.get()
+                                                                               ))
+    Button.grid(row=4 , column=1)
+    frame.pack()
+
+def tolerance_chosen():
+    frame = Frame(root)
+    Label(frame, text="You have chosen iterations").grid(row=0)
+    
+    Label(frame, text="Function:").grid(row=1)
+    function_input = Entry(frame, width = 20, cursor = 'hand2')
+    function_input.insert(0,'')
+    function_input.grid(row=1 , column=1, pady=10)
+    
+    Label(frame, text="Tolerance:").grid(row=2)
+    tolerance_input = Entry(frame, width = 20, cursor = 'hand2')
+    tolerance_input.insert(0,'')
+    tolerance_input.grid(row=2 , column=1, pady=10)
+    
+    Label(frame, text="Range in form (2,2):").grid(row=3)
+    range_input = Entry(frame, width = 20, cursor = 'hand2')
+    range_input.insert(0,'')
+    range_input.grid(row=3 , column=1, pady=10)
+     
+    Button = Button(frame, text = "Submit", command = lambda: set_tolerance_values(function_input.get(), 
+                                                                               tolerance_input.get(), 
+                                                                               range_input.get()
+                                                                               ))
+    Button.grid(row=4 , column=1)
+    frame.pack()
+
 def set_input_values(function, tolerance, range_dimm):
     set_tolerance(tolerance)
     find_xs(function)
     set_range(range_dimm)
     math_stuff()
 
+def set_iterations_values(function, iterations, range_dimm):
+    set_iterations(iterations)
+    set_tolerance(0.0001)
+    find_xs(function)
+    set_range(range_dimm)
+    math_stuff()    
+
 def set_tolerance(input_string):
     global tolerance
     tolerance = float(input_string)
-    
+
 def set_range(input_string):
     global range_begin
     global range_end 
@@ -32,27 +102,14 @@ def set_range(input_string):
     separator = input_string.find("," , 0)
     range_begin = float(input_string[0:separator])
     range_end = float(input_string[separator+1:])
-    
 
-def find_xs(input_string):
-    global input_function
-    global X_indexes
-    x_arrays = []
-    first_x = input_string.find('x', 0)
-    x_arrays.insert(0, first_x)
-    i = 1
-    
-    while ((input_string.find( 'x', x_arrays[i-1] + 1) != -1) and (input_string.find( 'x', x_arrays[i-1] + 1) != None)):
-        x_arrays.append(input_string.find( 'x', x_arrays[i-1] + 1 ))
-        i += 1
-        
-    X_indexes = x_arrays
-    input_function = input_string
+def set_iterations(input_string):
+    global iterations
+    iterations = float(input_string)    
   
 ################## MATH FUNCTIONS ###########################################################
 def f(x):
     global input_function
-    global X_indexes
     
     input_function.replace( "x", str(x) )
     input_function.replace( " ", "" )
@@ -99,31 +156,22 @@ root.geometry("600x600")
 root.title("MM&MJ")
 
  
-frame = Frame(root)
-frame.pack()
 
-Label(frame, text="First exercise").grid(row=0)
+Button = Button(root, text = "Choose condition", command = lambda: choose_main_condition(tkvarq.get()) )
 
-Label(frame, text="Function:").grid(row=1)
-function_input = Entry(frame, width = 20, cursor = 'hand2')
-function_input.insert(0,'')
-function_input.grid(row=1 , column=1, pady=10)
+options = ["Get the result based on  tolerance",
+           "Get the result based on  number of iterations"
+           ]
 
-Label(frame, text="Tolerance:").grid(row=2)
-tolerance_input = Entry(frame, width = 20, cursor = 'hand2')
-tolerance_input.insert(0,'')
-tolerance_input.grid(row=2 , column=1, pady=10)
+## SELECT MENU
+tkvarq = StringVar(root)
+tkvarq.set(options[0])
+question_menu = OptionMenu(root, tkvarq, *options)
+question_menu.pack()
+Button.pack()
 
-Label(frame, text="Range in form (2,2):").grid(row=3)
-range_input = Entry(frame, width = 20, cursor = 'hand2')
-range_input.insert(0,'')
-range_input.grid(row=3 , column=1, pady=10)
- 
-Button = Button(frame, text = "Submit", command = lambda: set_input_values(function_input.get(), 
-                                                                           tolerance_input.get(), 
-                                                                           range_input.get()
-                                                                           ))
-Button.grid(row=4 , column=1)
+### DISPLAYS CHOSEN VERSION
+
 
 
 root.mainloop()
