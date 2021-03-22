@@ -15,19 +15,8 @@ range_end = ""
 iterations = ""
 
 ################################# INPUT FUNCTIONS ##################################################################
-def choose_main_condition(chosen_condition):
-    if (chosen_condition == "Get the result based on  tolerance") :
-        tolerance_chosen()
-    elif(chosen_condition == "Get the result based on  number of iterations"):
-        iterations_chosen()
-    else:
-        something_went_wront(chosen_condition)
-
-def something_went_wront(chosen_condition):
-    Label(frame, text="Sorry! Something went wrong. Here is the codition: " + chosen_condition).grid(row=0)
 
 def iterations_chosen():
-    frame = Frame(root)
     Label(frame, text="You have chosen tolerance").grid(row=0)
     
     Label(frame, text="Function:").grid(row=1)
@@ -45,15 +34,13 @@ def iterations_chosen():
     range_input.insert(0,'')
     range_input.grid(row=3 , column=1, pady=10)
      
-    Button = Button(frame, text = "Submit", command = lambda: set_iterations_values(function_input.get(), 
+    Button_submit = Button(frame, text = "Submit", command = lambda: set_iterations_values(function_input.get(), 
                                                                                iterations_input.get(), 
                                                                                range_input.get()
                                                                                ))
-    Button.grid(row=4 , column=1)
-    frame.pack()
+    Button_submit.grid(row=4 , column=1)
 
 def tolerance_chosen():
-    frame = Frame(root)
     Label(frame, text="You have chosen iterations").grid(row=0)
     
     Label(frame, text="Function:").grid(row=1)
@@ -71,29 +58,44 @@ def tolerance_chosen():
     range_input.insert(0,'')
     range_input.grid(row=3 , column=1, pady=10)
      
-    Button = Button(frame, text = "Submit", command = lambda: set_tolerance_values(function_input.get(), 
+    Button_submit = Button(frame, text = "Submit", command = lambda: set_tolerance_values(function_input.get(), 
                                                                                tolerance_input.get(), 
                                                                                range_input.get()
                                                                                ))
-    Button.grid(row=4 , column=1)
-    frame.pack()
+    Button_submit.grid(row=4 , column=1)
 
-def set_input_values(function, tolerance, range_dimm):
+def choose_main_condition(chosen_condition):
+    if (chosen_condition == "Get the result based on  tolerance") :
+        tolerance_chosen()
+    elif(chosen_condition == "Get the result based on  number of iterations"):
+        iterations_chosen()
+    else:
+        something_went_wront(chosen_condition)
+
+def something_went_wront(chosen_condition):
+    Label(frame, text="Sorry! Something went wrong. Here is the codition: " + chosen_condition).grid(row=0)
+
+
+def set_tolerance_values(function, tolerance, range_dimm):
     set_tolerance(tolerance)
-    find_xs(function)
+    set_function(function)
     set_range(range_dimm)
     math_stuff()
 
 def set_iterations_values(function, iterations, range_dimm):
     set_iterations(iterations)
+    set_function(function)
     set_tolerance(0.0001)
-    find_xs(function)
     set_range(range_dimm)
     math_stuff()    
 
 def set_tolerance(input_string):
     global tolerance
     tolerance = float(input_string)
+    
+def set_function(input_string):
+    global input_function
+    input_function = input_string
 
 def set_range(input_string):
     global range_begin
@@ -156,8 +158,8 @@ root.geometry("600x600")
 root.title("MM&MJ")
 
  
-
-Button = Button(root, text = "Choose condition", command = lambda: choose_main_condition(tkvarq.get()) )
+frame = Frame(root)
+B = Button(root, text = "Choose condition", command = lambda: choose_main_condition(tkvarq.get()) )
 
 options = ["Get the result based on  tolerance",
            "Get the result based on  number of iterations"
@@ -168,8 +170,8 @@ tkvarq = StringVar(root)
 tkvarq.set(options[0])
 question_menu = OptionMenu(root, tkvarq, *options)
 question_menu.pack()
-Button.pack()
-
+B.pack()
+frame.pack()
 ### DISPLAYS CHOSEN VERSION
 
 
