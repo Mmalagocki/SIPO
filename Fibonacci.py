@@ -1,23 +1,22 @@
 import numpy as np
 from tkinter import *
 
-ta = 0
-tb = 0
-te = 0
+ta = 1
+tb = 2
+te = 0.1
 
 ################ GUI  ####################################
   
-    
-def set_values(tb, ta, te):
+def set_values(ta, tb, te):
     set_right(tb)
     set_left(ta)
     set_epsylon(te)
     computeFibOpt()
-    
+
 def set_left(input_string):
     global ta
     ta = float(input_string)
-    
+
 def set_right(input_string):
     global tb
     tb = float(input_string)
@@ -25,8 +24,6 @@ def set_right(input_string):
 def set_epsylon(input_string):
     global te
     te = float(input_string)
-    
-
 
 ######### MATH ##################################
 def Fibonacci(n):
@@ -52,17 +49,10 @@ def findOptimalN(e,a,b):
     fn = int(2*(b-a)/e)
     return findNFromFib(fn)
 
-def func3(x):
-    return (x**4 - 14*(x**3) + 60*(x**2) - 70*x)
-
 def func(x):
     return (((-1)/(x-1)**2) * (np.log(x)-2*((x-1)/(x+1))))
 
-def leftBound(a,b,N,i):
-    print(type(a))
-    print(type(b))
-    print(type(i))
-    print(type(N))    
+def leftBound(a,b,N,i): 
     return float((a + (Fibonacci(N-i-1)/Fibonacci(N-i+1)) * (b-a)))
 
 def rightBound(a,b,N,i):
@@ -77,11 +67,7 @@ def computeFibOpt():
     b = tb
     e = te
     oN = float(findOptimalN(e,a,b))
-    i=float(1)
-    print(a)
-    print(b)
-    print(i)
-    print(oN) 
+    i = float(1)
 
     #pierwsza iteracja
     x1 = leftBound(a,b,oN,i)
@@ -105,13 +91,20 @@ def computeFibOpt():
             b = b
             x1 = x2
             x2 = rightBound(a,b,oN,i)
-
+            
+    Label(frame, text="Results:").grid(row=5, column = 1)
+    Label(frame, text= " a = ").grid(row=5, column = 2)
+    Label(frame, text= " b = ").grid(row=5, column = 4)
+    Label(frame, text= " c = ").grid(row=5, column = 6)
+    Label(frame, text= a ).grid(row=5, column = 3)
+    Label(frame, text= b ).grid(row=5, column = 5)
+    Label(frame, text= i ).grid(row=5, column = 7)    
     return [a,b,i]
 
 #print(func2(2.642))
 
 root = Tk()
-root.geometry("600x600")
+root.geometry("1000x600")
 root.title("MM&MJ")
 
  
@@ -121,25 +114,25 @@ frame.pack()
 ### DISPLAYS CHOSEN VERSION
 Label(frame, text="Fibonacci method").grid(row=0)
 
-Label(frame, text="Right bound:").grid(row=1)
-right_bound_input = Entry(frame, width = 20, cursor = 'hand2')
-right_bound_input.insert(0,'')
-right_bound_input.grid(row=1 , column=1, pady=10)
-
-Label(frame, text="Left bound:").grid(row=2)
+Label(frame, text="Left bound:").grid(row=1)
 left_bound_input = Entry(frame, width = 20, cursor = 'hand2')
 left_bound_input.insert(0,'')
-left_bound_input.grid(row=2 , column=1, pady=10)
+left_bound_input.grid(row=1 , column=1, pady=10)
+
+Label(frame, text="Right bound:").grid(row=2)
+right_bound_input = Entry(frame, width = 20, cursor = 'hand2')
+right_bound_input.insert(0,'')
+right_bound_input.grid(row=2 , column=1, pady=10)
 
 Label(frame, text="Epsylon:").grid(row=3)
-epsylon = Entry(frame, width = 20, cursor = 'hand2')
-epsylon.insert(0,'')
-epsylon.grid(row=3 , column=1, pady=10)
+input_epsylon = Entry(frame, width = 20, cursor = 'hand2')
+input_epsylon.insert(0,'')
+input_epsylon.grid(row=3 , column=1, pady=10)
  
-Button_submit = Button(frame, text = "Submit", command = lambda: set_values(right_bound_input.get(), 
-                                                                           left_bound_input.get(), 
-                                                                           epsylon.get()
-                                                                           ))
+Button_submit = Button(frame, text = "Submit", command = lambda: set_values(left_bound_input.get(),
+                                                                            right_bound_input.get(),
+                                                                            input_epsylon.get()
+                                                                            ))
 Button_submit.grid(row=4 , column=1)
 
 
