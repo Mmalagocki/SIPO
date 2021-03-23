@@ -121,17 +121,47 @@ def f(x):
 def bisection():
     global tolerance
     global range_begin
-    global range_end    
+    global range_end
+    global iterations
+    i = 0
+    grid = 7
+    
+    if(iterations != ""):
+        while (i  < iterations):
+            c = (range_begin + range_end)/2.0
+            prod = f(range_begin)*f(c)
+            Label(frame, text="Range begin: ").grid(row=grid, column = 1)
+            Label(frame, text=range_begin).grid(row=grid + 1, column = 1)
+            Label(frame, text="Range end: ").grid(row=grid, column = 2)
+            Label(frame, text=range_begin).grid(row=grid + 1, column = 2)            
+            ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
+            if prod > tolerance:
+                range_begin = c
+            else:
+                if prod < tolerance:
+                    range_end = c
+            i+= 1
+            grid += 2
+            
+        
+        return c        
+    else:
+        while (np.abs(range_begin-range_end) >= tolerance):
+            c = (range_begin + range_end)/2.0
+            prod = f(range_begin)*f(c)
+            Label(frame, text="Range begin: ").grid(row=grid, column = 1)
+            Label(frame, text=range_begin).grid(row=grid + 1, column = 1)
+            Label(frame, text="Range end: ").grid(row=grid, column = 2)
+            Label(frame, text=range_end).grid(row=grid + 1, column = 2)              
+            ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
+            if prod > tolerance:
+                range_begin = c
+            else:
+                if prod < tolerance:
+                    range_end = c
+            grid += 2
+        return c        
 
-    while (np.abs(range_begin-range_end) >= tolerance):
-        c = (range_begin + range_end)/2.0
-        prod = f(range_begin)*f(c)
-        if prod > tolerance:
-            range_begin = c
-        else:
-            if prod < tolerance:
-                range_end = c
-    return c
 def math_stuff():
     global range_begin
     global range_end
@@ -141,10 +171,8 @@ def math_stuff():
     #print(" Bisection Method Gives Root At x =",answer)
     
     
-    shortcut = fsolve(f,[range_begin, range_end])
-    print(" These are roots of function given with Fsolve ",shortcut)
-    
-    Label(frame, text="Shortcut:").grid(row=6)
+    shortcut = fsolve(f,[range_begin, range_end])    
+    Label(frame, text="Fsolve result:").grid(row=6)
     Label(frame, text=shortcut).grid(row=6, column = 1)    
  
     x = np.linspace(range_begin,range_end,100)
