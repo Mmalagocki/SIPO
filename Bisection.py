@@ -5,34 +5,35 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,  
 NavigationToolbar2Tk) 
 from tkinter import *
-from scipy.optimize import fsolve 
-from decimal import Decimal
+from scipy.optimize import fsolve
    
 input_function = ""
 tolerance = ""
 range_begin = ""
 range_end = ""
 iterations = ""
+results_array_len = 2
+results = []
 
 ################################# INPUT FUNCTIONS ##################################################################
 
 def iterations_chosen():
-    Label(frame, text="You have chosen tolerance").grid(row=0)
+    Label(frame, text="You have chosen iterations").grid(row = 0)
     
-    Label(frame, text="Function:").grid(row=1)
+    Label(frame, text="Function:").grid(row = 1)
     function_input = Entry(frame, width = 20, cursor = 'hand2')
     function_input.insert(0,'')
-    function_input.grid(row=1 , column=1, pady=10)
+    function_input.grid(row=1 , column=1, pady = 10)
     
-    Label(frame, text="Iterations:").grid(row=2)
+    Label(frame, text="Iterations:").grid(row = 2)
     iterations_input = Entry(frame, width = 20, cursor = 'hand2')
     iterations_input.insert(0,'')
-    iterations_input.grid(row=2 , column=1, pady=10)
+    iterations_input.grid(row = 2 , column=1, pady = 10)
     
-    Label(frame, text="Range in form (2,2):").grid(row=3)
+    Label(frame, text="Range in form (2,2):").grid(row = 3)
     range_input = Entry(frame, width = 20, cursor = 'hand2')
     range_input.insert(0,'')
-    range_input.grid(row=3 , column=1, pady=10)
+    range_input.grid(row = 3 , column = 1, pady = 10)
      
     Button_submit = Button(frame, text = "Submit", command = lambda: set_iterations_values(function_input.get(), 
                                                                                iterations_input.get(), 
@@ -41,28 +42,28 @@ def iterations_chosen():
     Button_submit.grid(row=4 , column=1)
 
 def tolerance_chosen():
-    Label(frame, text="You have chosen iterations").grid(row=0)
+    Label(frame, text="You have chosen tolerance").grid(row = 0)
     
-    Label(frame, text="Function:").grid(row=1)
+    Label(frame, text="Function:").grid(row = 1)
     function_input = Entry(frame, width = 20, cursor = 'hand2')
     function_input.insert(0,'')
-    function_input.grid(row=1 , column=1, pady=10)
+    function_input.grid(row=  1 , column = 1, pady = 10)
     
-    Label(frame, text="Tolerance:").grid(row=2)
+    Label(frame, text="Tolerance:").grid(row = 2)
     tolerance_input = Entry(frame, width = 20, cursor = 'hand2')
     tolerance_input.insert(0,'')
-    tolerance_input.grid(row=2 , column=1, pady=10)
+    tolerance_input.grid(row = 2 , column = 1, pady = 10)
     
-    Label(frame, text="Range in form (2,2):").grid(row=3)
+    Label(frame, text="Range in form ( -2,2 ):").grid(row = 3)
     range_input = Entry(frame, width = 20, cursor = 'hand2')
     range_input.insert(0,'')
-    range_input.grid(row=3 , column=1, pady=10)
+    range_input.grid(row = 3 , column = 1, pady = 10)
      
     Button_submit = Button(frame, text = "Submit", command = lambda: set_tolerance_values(function_input.get(), 
                                                                                tolerance_input.get(), 
                                                                                range_input.get()
                                                                                ))
-    Button_submit.grid(row=4 , column=1)
+    Button_submit.grid(row = 4 , column = 1)
 
 def choose_main_condition(chosen_condition):
     if (chosen_condition == "Get the result based on  tolerance") :
@@ -100,6 +101,7 @@ def set_function(input_string):
 def set_range(input_string):
     global range_begin
     global range_end 
+
     input_function.replace( " ", "" )
     separator = input_string.find("," , 0)
     range_begin = float(input_string[0:separator])
@@ -117,23 +119,70 @@ def f(x):
     input_function.replace( " ", "" )
     code = compile(input_function, "<string>", "eval")
     return eval(code)
+def not_unimodal_bisection(range_begin, range_end):
+    global iterations
+    global tolerance
+    global results_array_len
+    global results
+    
+    
+    if(iterations != ""):
+        while (i  < iterations):
+            c = (range_begin + range_end)/2.0
+            ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
+            if ((f(range_begin) > f(c)) and f(range_begin) > f(range_end)) :
+                range_begin = c
+            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
+                range_end = c
+            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
+                    not_unimodal_bisection(range_begin, c)
+                    not_unimodal_bisection(c, range_end)
+        
+            results_array_len += 1
+            results.insert(results_array_len, range_begin)
+            results_array_len += 1
+            results.insert(results_array_len, range_end)
+            
+    else:
+        while (np.abs(range_begin-range_end) >= tolerance):
+            c = (range_begin + range_end)/2.0
+            ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
+            if ((f(range_begin) > f(c)) and f(range_begin) > f(range_end)) :
+                range_begin = c
+            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
+                range_end = c
+            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
+                    not_unimodal_bisection(range_begin, c)
+                    not_unimodal_bisection(c, range_end)
+            
+            results_array_len += 1
+            results.insert(results_array_len, range_begin)
+            results_array_len += 1
+            results.insert(results_array_len, range_end)
+    
 
 def bisection():
     global tolerance
     global range_begin
     global range_end
+    global results
     global iterations
     i = 0
     grid = 7
+    column = 2
     
     if(iterations != ""):
         while (i  < iterations):
             c = (range_begin + range_end)/2.0
             prod = f(range_begin)*f(c)
-            Label(frame, text="Range begin: ").grid(row=grid, column = 1)
-            Label(frame, text=range_begin).grid(row=grid + 1, column = 1)
-            Label(frame, text="Range end: ").grid(row=grid, column = 2)
-            Label(frame, text=range_begin).grid(row=grid + 1, column = 2)            
+            Label(frame, text = "Processing ").grid(row = 5, column = 2 )
+            Label(frame, text =  i).grid(row = grid + 3, column = column)
+            Label(frame, text = "Range begin: ").grid(row = grid, column = column)
+            Label(frame, text = round(range_begin,2)).grid(row = grid + 1, column = column)
+            Label(frame, text = "Range end: ").grid(row = grid, column = column + 1)
+            Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
+            Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
+            Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
             if prod > tolerance:
                 range_begin = c
@@ -141,48 +190,78 @@ def bisection():
                 if prod < tolerance:
                     range_end = c
             i+= 1
-            grid += 2
-            
-        
+            if(grid <= 13):
+                grid += 4
+            else:
+                grid = 7
+                column += 5 
         return c        
     else:
         while (np.abs(range_begin-range_end) >= tolerance):
+            print ("Beging", range_begin, "end", range_end)
             c = (range_begin + range_end)/2.0
-            prod = f(range_begin)*f(c)
-            Label(frame, text="Range begin: ").grid(row=grid, column = 1)
-            Label(frame, text=range_begin).grid(row=grid + 1, column = 1)
-            Label(frame, text="Range end: ").grid(row=grid, column = 2)
-            Label(frame, text=range_end).grid(row=grid + 1, column = 2)              
+            Label(frame, text = "Processing ").grid(row = 5, column = 2 )
+            Label(frame, text =  i).grid(row = grid + 3, column = column)
+            Label(frame, text = "Range begin: ").grid(row = grid, column = column)
+            Label(frame, text = round(range_begin,2)).grid(row = grid + 1, column = column)
+            Label(frame, text = "Range end: ").grid(row = grid, column = column + 1)
+            Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
+            Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
+            Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if prod > tolerance:
+            if ((f(range_begin) >= f(c)) and f(range_begin) >= f(range_end)) :
                 range_begin = c
+            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
+                range_end = c
+            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
+                not_unimodal_bisection(range_begin, c)
+                not_unimodal_bisection(c, range_end)
+            i+=1
+            if(grid <= 13):
+                grid += 4
+            elif(column < 14):
+                grid = 7
+                column += 5                
             else:
-                if prod < tolerance:
-                    range_end = c
-            grid += 2
-        return c        
+                continue
+        
+        results.insert(1, range_begin)
+        results.insert(2, range_end)
+        j = 1
+        grid = 6
+        
+        if( len(results) > 3):
+            while (j <= len(results)):
+                print ("I'm working2")
+                Label(frame, text = ( results[j], results[j+1])).grid(row = grid)
+                j += 2
+                grid += 2
+            return "There was many results"
+        return  range_begin, range_end
 
 def math_stuff():
     global range_begin
     global range_end
+ 
+    initial_begin = range_begin
+    initial_end = range_end
+    
     answer = bisection()
-    Label(frame, text="Answer:").grid(row=5)
-    Label(frame, text=answer).grid(row=5, column = 1)
+    Label(frame, text=("Answer:", answer)).grid(row=5)
+    #Label(frame, text=answer).grid(row=5, column = 1)
     #print(" Bisection Method Gives Root At x =",answer)
     
-    
     shortcut = fsolve(f,[range_begin, range_end])    
-    Label(frame, text="Fsolve result:").grid(row=6)
-    Label(frame, text=shortcut).grid(row=6, column = 1)    
- 
-    x = np.linspace(range_begin,range_end,100)
+    Label(frame, text=("Fsolve result:", shortcut)).grid(row=6)
+    #bel(frame, text=shortcut).grid(row=6, column = 1)    
+    x = np.linspace(initial_begin,initial_end,100)
     plt.plot(x,f(x))
     plt.grid()  
     plt.show()    
 
 ##################### WINDOW #############################################
 root = Tk()
-root.geometry("600x600")
+root.geometry("1200x900")
 root.title("MM&MJ")
 
  

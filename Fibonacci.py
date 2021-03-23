@@ -41,8 +41,8 @@ def findNFromFib(fn):
     while(Fibonacci(n)<fn):
         n=n+1
 
-    Label(frame, text="Optimal n:").grid(row=7, column = 1)
-    Label(frame, text= n-1).grid(row=7, column = 2)
+    Label(frame, text= ("Optimal n = ", n-1)).grid(row=9)
+
     return n-1
 
 def findOptimalN(e,a,b):
@@ -74,10 +74,18 @@ def computeFibOpt():
     x2 = rightBound(a,b,oN,i)  
     print(x1, x2)
     print(x2-x1)
+    grid = 6
 
     while(abs(x1-x2)>e and i<=oN):
         i=i+1
-
+        
+        
+        Label(frame, text="Processing:").grid(row = 5, column = 2)
+        Label(frame, text= (" a = ", round(a, 2)) ).grid(row = grid, column = 2)
+        Label(frame, text= (" b = ", round(b, 2)) ).grid(row = grid+1, column = 2)
+        Label(frame, text= (" x1 = ", round(x1, 2)) ).grid(row = grid+2, column = 2)
+        Label(frame, text= (" x2 = ", round(x2, 2)) ).grid(row = grid+3, column = 2)
+        Label(frame, text= ("____________") ).grid(row = grid+4, column = 2)
         fx1 = func(x1)
         fx2 = func(x2)
 
@@ -91,14 +99,13 @@ def computeFibOpt():
             b = b
             x1 = x2
             x2 = rightBound(a,b,oN,i)
+        grid += 5
             
-    Label(frame, text="Results:").grid(row=5, column = 1)
-    Label(frame, text= " a = ").grid(row=5, column = 2)
-    Label(frame, text= " b = ").grid(row=5, column = 4)
-    Label(frame, text= " c = ").grid(row=5, column = 6)
-    Label(frame, text= a ).grid(row=5, column = 3)
-    Label(frame, text= b ).grid(row=5, column = 5)
-    Label(frame, text= i ).grid(row=5, column = 7)    
+    Label(frame, text="Results:").grid(row=5)
+    Label(frame, text= (" a = ", round(a, 2)) ).grid(row=6)
+    Label(frame, text= (" b = ", round(b, 2)) ).grid(row=7)
+    Label(frame, text= (" c = ", round(i, 2)) ).grid(row=8)
+  
     return [a,b,i]
 
 #print(func2(2.642))
