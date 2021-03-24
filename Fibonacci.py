@@ -94,6 +94,7 @@ def computeFibOpt():
             a = a
             b = x2
             x2 = x1
+			fx2 = fx1
             x1 = leftBound(a,b,oN,i,listFibonacci)
 			fx1 = func(x1)
         elif (fx1 >= fx2):
@@ -101,6 +102,7 @@ def computeFibOpt():
             b = b
             x1 = x2
             x2 = rightBound(a,b,oN,i,listFibonacci)
+			fx1 = fx2
 			fx2 = func(x2)
         grid += 5
             
