@@ -79,7 +79,7 @@ def computeFibOpt():
 	fx1 = func(x1)
     fx2 = func(x2)
 
-    while(abs(x1-x2)>e and i<=oN):
+    while(abs(a-b)>e and i<=oN):
         i=i+1
         
         
