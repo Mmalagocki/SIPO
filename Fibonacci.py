@@ -71,9 +71,7 @@ def computeFibOpt():
 
     #pierwsza iteracja
     x1 = leftBound(a,b,oN,i,listFibonacci)
-    x2 = rightBound(a,b,oN,i,listFibonacci)  
-    print(x1, x2)
-    print(x2-x1)
+    x2 = rightBound(a,b,oN,i,listFibonacci)
     grid = 6
 	
 	fx1 = func(x1)
@@ -91,7 +89,6 @@ def computeFibOpt():
         Label(frame, text= ("____________") ).grid(row = grid+4, column = 2)
         
         if(fx1 < fx2):
-            a = a
             b = x2
             x2 = x1
 			fx2 = fx1
@@ -99,7 +96,6 @@ def computeFibOpt():
 			fx1 = func(x1)
         elif (fx1 >= fx2):
             a = x1
-            b = b
             x1 = x2
             x2 = rightBound(a,b,oN,i,listFibonacci)
 			fx1 = fx2
