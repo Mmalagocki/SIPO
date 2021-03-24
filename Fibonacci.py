@@ -47,11 +47,11 @@ def makeListFromFmax(Fmax):
 def func(x):
     return (((-1)/(x-1)**2) * (np.log(x)-2*((x-1)/(x+1))))
 
-def leftBound(a,b,N,i): 
-    return float((a + (Fibonacci(N-i-1)/Fibonacci(N-i+1)) * (b-a)))
+def leftBound(a,b,N,i,list):
+    return float((a + (list[N-i-1]/list[N-i+1]) * (b-a)))
 
-def rightBound(a,b,N,i):
-    return float((a + (Fibonacci(N-i)/Fibonacci(N-i+1)) * (b-a)))
+def rightBound(a,b,N,i,list):
+    return float((a + (list[N-i]/list[N-i+1]) * (b-a)))
 
 def computeFibOpt():
     global ta
@@ -70,8 +70,8 @@ def computeFibOpt():
     i = float(1)
 
     #pierwsza iteracja
-    x1 = leftBound(a,b,oN,i)
-    x2 = rightBound(a,b,oN,i)  
+    x1 = leftBound(a,b,oN,i,listFibonacci)
+    x2 = rightBound(a,b,oN,i,listFibonacci)  
     print(x1, x2)
     print(x2-x1)
     grid = 6
