@@ -75,6 +75,9 @@ def computeFibOpt():
     print(x1, x2)
     print(x2-x1)
     grid = 6
+	
+	fx1 = func(x1)
+    fx2 = func(x2)
 
     while(abs(x1-x2)>e and i<=oN):
         i=i+1
@@ -86,19 +89,19 @@ def computeFibOpt():
         Label(frame, text= (" x1 = ", round(x1, 2)) ).grid(row = grid+2, column = 2)
         Label(frame, text= (" x2 = ", round(x2, 2)) ).grid(row = grid+3, column = 2)
         Label(frame, text= ("____________") ).grid(row = grid+4, column = 2)
-        fx1 = func(x1)
-        fx2 = func(x2)
-
+        
         if(fx1 < fx2):
             a = a
             b = x2
             x2 = x1
-            x1 = leftBound(a,b,oN,i)
+            x1 = leftBound(a,b,oN,i,listFibonacci)
+			fx1 = func(x1)
         elif (fx1 >= fx2):
             a = x1
             b = b
             x1 = x2
-            x2 = rightBound(a,b,oN,i)
+            x2 = rightBound(a,b,oN,i,listFibonacci)
+			fx2 = func(x2)
         grid += 5
             
     Label(frame, text="Results:").grid(row=5)
