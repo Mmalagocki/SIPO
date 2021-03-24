@@ -26,28 +26,23 @@ def set_epsylon(input_string):
     te = float(input_string)
 
 ######### MATH ##################################
-def Fibonacci(n):
-    if n<0:
-        return "Incorrect argument"
-    elif n==0:
-        return 0
-    elif n==1:
-        return 1
-    else:
-        return Fibonacci(n-1)+Fibonacci(n-2)
+def calculateFmax(e,a,b):
+    Fmax = int(2*(b-a)/e)
+    return Fmax
 
-def findNFromFib(fn):
-    n = 2
-    while(Fibonacci(n)<fn):
-        n=n+1
+def makeListFromFmax(Fmax):
+    a = 0 # zerowy element
+    b = 1 # pierwszy element
+    t = 0 # element pomocniczy
+    list = [a,b]
 
-    Label(frame, text= ("Optimal n = ", n-1)).grid(row=9)
+    while list[-1]<Fmax:
+        t = b
+        b = a+b
+        a = t
+        list.append(b)
 
-    return n-1
-
-def findOptimalN(e,a,b):
-    fn = int(2*(b-a)/e)
-    return findNFromFib(fn)
+    return list
 
 def func(x):
     return (((-1)/(x-1)**2) * (np.log(x)-2*((x-1)/(x+1))))
@@ -66,7 +61,12 @@ def computeFibOpt():
     a = ta
     b = tb
     e = te
-    oN = float(findOptimalN(e,a,b))
+    Fmax = calculateFmax(e,a,b)
+    listFibonacci = makeListFromFmax(Fmax)
+    oN = len(listFibonacci)-2
+	
+	Label(frame, text= ("Optimal n = ", oN)).grid(row=9)
+	
     i = float(1)
 
     #pierwsza iteracja
