@@ -124,19 +124,90 @@ def not_unimodal_bisection(range_begin, range_end):
     global tolerance
     global results_array_len
     global results
-    
-    
+        
     if(iterations != ""):
+        distance = np.abs(range_begin-range_end) 
         while (i  < iterations):
-            c = (range_begin + range_end)/2.0
+            delta = distance / 4
+            cl = 0.5 * (range_begin + range_end) - delta
+            cr = 0.5 * (range_begin + range_end) + delta               
+            #c = (range_begin + range_end)/2.0
+            prod = f(range_begin)*f(c)
+            Label(frame, text = "Processing ").grid(row = 5, column = 2 )
+            Label(frame, text =  i).grid(row = grid + 3, column = column)
+            Label(frame, text = "Range begin: ").grid(row = grid, column = column)
+            Label(frame, text = round(range_begin,2)).grid(row = grid + 1, column = column)
+            Label(frame, text = "Range end: ").grid(row = grid, column = column + 1)
+            Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
+            Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
+            Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) > f(c)) and f(range_begin) > f(range_end)) :
-                range_begin = c
-            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
-                range_end = c
-            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
-                    not_unimodal_bisection(range_begin, c)
-                    not_unimodal_bisection(c, range_end)
+            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+                print ("1")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+                print ("2")
+                range_begin =  cl
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+                print ("3")
+                range_begin = cl    
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                print ("4")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("5")
+                range_end = cr
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("6")
+                range_end = cr                    
+            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+                print ("7")
+                not_unimodal_bisection(range_begin, cl)
+                not_unimodal_bisection(cr, range_end)
+                not_unimodal_bisection(cl, cr)
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+                print ("8")
+                range_begin = cl              
+            else:
+                print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                if(f(range_begin) >= f(cl)):
+                    print('f(range_begin) >= f(cl)')
+                else:
+                    print('f(range_begin) < f(cl)')
+                if(f(range_begin) >= f(range_end)):
+                    print('f(range_begin) >= f(range_end)')
+                else:
+                    print('f(range_begin) < f(range_end)')
+                if(f(cl) <= f(cr)):
+                    print('f(cl) <= f(cr)')
+                else:
+                    print('f(cl) > f(cr)')
+                
+                print('That is how far i go')
+                if(f(range_begin) <= f(cr)):
+                    print('f(range_begin) <= f(cr)')
+                else:
+                    print('f(range_begin) > f(cr)')
+                if(f(range_end) <= f(cr)):
+                    print('f(range_end) <= f(cr)')
+                else:
+                    print('f(range_end) > f(cr)')          
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')        
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')    
+                print('I reach here')
+                return 0
+            i+= 1
+            if(grid <= 13):
+                grid += 4
+            else:
+                grid = 7
+                column += 5 
         
             results_array_len += 1
             results.insert(results_array_len, range_begin)
@@ -144,21 +215,101 @@ def not_unimodal_bisection(range_begin, range_end):
             results.insert(results_array_len, range_end)
             
     else:
-        while (np.abs(range_begin-range_end) >= tolerance):
-            c = (range_begin + range_end)/2.0
+        distance = np.abs(range_begin-range_end) 
+        while (distance >= tolerance):
+
+            #print ("Beging", range_begin, "end", range_end)
+            #print ("Distance", distance, )
+            delta = distance/ 4
+            cl = 0.5 * (range_begin + range_end) - delta
+            cr = 0.5 * (range_begin + range_end) + delta               
+            Label(frame, text = "Processing ").grid(row = 5, column = 2 )
+            Label(frame, text =  i).grid(row = grid + 3, column = column)
+            Label(frame, text = "Range begin: ").grid(row = grid, column = column)
+            Label(frame, text = round(range_begin,2)).grid(row = grid + 1, column = column)
+            Label(frame, text = "Range end: ").grid(row = grid, column = column + 1)
+            Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
+            Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
+            Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) > f(c)) and f(range_begin) > f(range_end)) :
-                range_begin = c
-            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
-                range_end = c
-            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
-                    not_unimodal_bisection(range_begin, c)
-                    not_unimodal_bisection(c, range_end)
+            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+                print ("1")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+                print ("2")
+                range_begin =  cl
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+                print ("3")
+                range_begin = cl    
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                print ("4")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("5")
+                range_end = cr
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("6")
+                range_end = cr                    
+            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+                print ("7")
+                not_unimodal_bisection(range_begin, cl)
+                not_unimodal_bisection(cr, range_end)
+                not_unimodal_bisection(cl, cr)
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+                print ("8")
+                range_begin = cl              
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) > f(cr))):
+                print ("9")
+                range_end = cr                    
+            else:
+                print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                if(f(range_begin) >= f(cl)):
+                    print('f(range_begin) >= f(cl)')
+                else:
+                    print('f(range_begin) < f(cl)')
+                if(f(range_begin) >= f(range_end)):
+                    print('f(range_begin) >= f(range_end)')
+                else:
+                    print('f(range_begin) < f(range_end)')
+                if(f(cl) <= f(cr)):
+                    print('f(cl) <= f(cr)')
+                else:
+                    print('f(cl) > f(cr)')
+                
+                print('That is how far i go')
+                if(f(range_begin) <= f(cr)):
+                    print('f(range_begin) <= f(cr)')
+                else:
+                    print('f(range_begin) > f(cr)')
+                if(f(range_end) <= f(cr)):
+                    print('f(range_end) <= f(cr)')
+                else:
+                    print('f(range_end) > f(cr)')          
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')        
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')    
+                print('I reach here')
+                return 0
+
+            i+=1
+            distance = np.abs(range_begin-range_end)
+            if(grid <= 13):
+                grid += 4
+            elif(column < 14):
+                grid = 7
+                column += 5                
+            else:
+                continue
             
-            results_array_len += 1
-            results.insert(results_array_len, range_begin)
-            results_array_len += 1
-            results.insert(results_array_len, range_end)
+        results_array_len += 1
+        results.insert(results_array_len, range_begin)
+        results_array_len += 1
+        results.insert(results_array_len, range_end)
     
 
 def bisection():
@@ -170,10 +321,15 @@ def bisection():
     i = 0
     grid = 7
     column = 2
+
     
     if(iterations != ""):
+        distance = np.abs(range_begin-range_end) 
         while (i  < iterations):
-            c = (range_begin + range_end)/2.0
+            delta = distance / 4
+            cl = 0.5 * (range_begin + range_end) - delta
+            cr = 0.5 * (range_begin + range_end) + delta               
+            #c = (range_begin + range_end)/2.0
             prod = f(range_begin)*f(c)
             Label(frame, text = "Processing ").grid(row = 5, column = 2 )
             Label(frame, text =  i).grid(row = grid + 3, column = column)
@@ -184,22 +340,77 @@ def bisection():
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if prod > tolerance:
-                range_begin = c
+            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+                print ("1")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+                print ("2")
+                range_begin =  cl
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+                print ("3")
+                range_begin = cl    
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                print ("4")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("5")
+                range_end = cr
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("6")
+                range_end = cr                    
+            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+                print ("7")
+                not_unimodal_bisection(range_begin, cl)
+                not_unimodal_bisection(cr, range_end)
+                not_unimodal_bisection(cl, cr)
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+                print ("8")
+                range_begin = cl              
             else:
-                if prod < tolerance:
-                    range_end = c
+                print('Im going into else')
+                if(f(range_begin) >= f(cl)):
+                    print('f(range_begin) >= f(cl)')
+                else:
+                    print('f(range_begin) < f(cl)')
+                if(f(range_begin) >= f(range_end)):
+                    print('f(range_begin) >= f(range_end)')
+                else:
+                    print('f(range_begin) < f(range_end)')
+                if(f(cl) <= f(cr)):
+                    print('f(cl) <= f(cr)')
+                else:
+                    print('f(cl) > f(cr)')
             i+= 1
             if(grid <= 13):
                 grid += 4
             else:
                 grid = 7
-                column += 5 
-        return c        
+                column += 5
+                
+        results.insert(1, range_begin)
+        results.insert(2, range_end)
+        j = 1
+        grid = 6
+        
+        if( len(results) > 3):
+            while (j <= len(results)):
+                print ("I'm working2")
+                print (len(results))
+                Label(frame, text = ( results[j], results[j+1])).grid(row = grid)
+                j += 2
+                grid += 2
+            return "There was many results"
+        return  range_begin, range_end
+    
     else:
-        while (np.abs(range_begin-range_end) >= tolerance):
-            print ("Beging", range_begin, "end", range_end)
-            c = (range_begin + range_end)/2.0
+        distance = np.abs(range_begin-range_end) 
+        while (distance >= tolerance):
+             
+            #print ("Beging", range_begin, "end", range_end)
+            #print ("Distance", distance, )
+            delta = distance/ 4
+            cl = 0.5 * (range_begin + range_end) - delta
+            cr = 0.5 * (range_begin + range_end) + delta               
             Label(frame, text = "Processing ").grid(row = 5, column = 2 )
             Label(frame, text =  i).grid(row = grid + 3, column = column)
             Label(frame, text = "Range begin: ").grid(row = grid, column = column)
@@ -209,14 +420,70 @@ def bisection():
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) >= f(c)) and f(range_begin) >= f(range_end)) :
-                range_begin = c
-            elif(f(range_end) > f(c)) and (f(range_end) > f(range_begin)):
-                range_end = c
-            elif(f(range_end) < f(c)) and (f(c) > f(range_begin)):
-                not_unimodal_bisection(range_begin, c)
-                not_unimodal_bisection(c, range_end)
+            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+                print ("1")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+                print ("2")
+                range_begin =  cl
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+                print ("3")
+                range_begin = cl    
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                print ("4")
+                range_begin = cl
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("5")
+                range_end = cr
+            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+                print ("6")
+                range_end = cr                    
+            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+                print ("7")
+                not_unimodal_bisection(range_begin, cl)
+                not_unimodal_bisection(cr, range_end)
+                not_unimodal_bisection(cl, cr)
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+                print ("8")
+                range_begin = cl     
+            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) > f(cr))):
+                print ("9")
+                range_end = cr                            
+            else:
+                print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                if(f(range_begin) >= f(cl)):
+                    print('f(range_begin) >= f(cl)')
+                else:
+                    print('f(range_begin) < f(cl)')
+                if(f(range_begin) >= f(range_end)):
+                    print('f(range_begin) >= f(range_end)')
+                else:
+                    print('f(range_begin) < f(range_end)')
+                if(f(cl) <= f(cr)):
+                    print('f(cl) <= f(cr)')
+                else:
+                    print('f(cl) > f(cr)')
+                if(f(range_begin) <= f(cr)):
+                    print('f(range_begin) <= f(cr)')
+                else:
+                    print('f(range_begin) > f(cr)')
+                if(f(range_end) <= f(cr)):
+                    print('f(range_end) <= f(cr)')
+                else:
+                    print('f(range_end) > f(cr)')          
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')        
+                if(f(range_end) >= f(cl)):
+                    print('f(range_end) >= f(cl)')
+                else:
+                    print('f(range_end) < f(cl)')    
+                print('I reach here')
+                return 0
+
             i+=1
+            distance = np.abs(range_begin-range_end)
             if(grid <= 13):
                 grid += 4
             elif(column < 14):
@@ -225,14 +492,15 @@ def bisection():
             else:
                 continue
         
-        results.insert(1, range_begin)
-        results.insert(2, range_end)
-        j = 1
+        results.insert(0, range_begin)
+        results.insert(1, range_end)
+        j = 0
         grid = 6
         
         if( len(results) > 3):
             while (j <= len(results)):
                 print ("I'm working2")
+                print (len(results))
                 Label(frame, text = ( results[j], results[j+1])).grid(row = grid)
                 j += 2
                 grid += 2
