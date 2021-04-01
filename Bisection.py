@@ -132,7 +132,7 @@ def not_unimodal_bisection(range_begin, range_end):
             cl = 0.5 * (range_begin + range_end) - delta
             cr = 0.5 * (range_begin + range_end) + delta               
             #c = (range_begin + range_end)/2.0
-            prod = f(range_begin)*f(c)
+
             Label(frame, text = "Processing ").grid(row = 5, column = 2 )
             Label(frame, text =  i).grid(row = grid + 3, column = column)
             Label(frame, text = "Range begin: ").grid(row = grid, column = column)
@@ -141,65 +141,69 @@ def not_unimodal_bisection(range_begin, range_end):
             Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
+            frb = f(range_begin)
+            fre = f(range_end)
+            fcl = f(cl)
+            fcr = f(cr)              
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+            if ((frb >= fcl) and (frb >= fre) and (fcl <= fcr)) :
                 print ("1")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)) :
                 print ("2")
                 range_begin =  cl
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl >= fcr)):
                 print ("3")
                 range_begin = cl    
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)):
                 print ("4")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("5")
                 range_end = cr
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("6")
                 range_end = cr                    
-            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+            elif (fre < fcl) and (fcr> frb):
                 print ("7")
                 not_unimodal_bisection(range_begin, cl)
                 not_unimodal_bisection(cr, range_end)
                 not_unimodal_bisection(cl, cr)
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl <= fcr)):
                 print ("8")
                 range_begin = cl              
             else:
                 print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                if(f(range_begin) >= f(cl)):
-                    print('f(range_begin) >= f(cl)')
+                if(frb >= fcl):
+                    print('frb >= fcl')
                 else:
-                    print('f(range_begin) < f(cl)')
-                if(f(range_begin) >= f(range_end)):
-                    print('f(range_begin) >= f(range_end)')
+                    print('frb < fcl')
+                if(frb >= fre):
+                    print('frb >= fre')
                 else:
-                    print('f(range_begin) < f(range_end)')
-                if(f(cl) <= f(cr)):
-                    print('f(cl) <= f(cr)')
+                    print('frb < fre')
+                if(fcl <= fcr):
+                    print('fcl <= fcr')
                 else:
-                    print('f(cl) > f(cr)')
+                    print('fcl > fcr')
                 
                 print('That is how far i go')
-                if(f(range_begin) <= f(cr)):
-                    print('f(range_begin) <= f(cr)')
+                if(frb <= fcr):
+                    print('frb <= fcr')
                 else:
-                    print('f(range_begin) > f(cr)')
-                if(f(range_end) <= f(cr)):
-                    print('f(range_end) <= f(cr)')
+                    print('frb > fcr')
+                if(fre <= fcr):
+                    print('fre <= fcr')
                 else:
-                    print('f(range_end) > f(cr)')          
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
+                    print('fre > fcr')          
+                if(fre >= fcl):
+                    print('fre >= fcl')
                 else:
-                    print('f(range_end) < f(cl)')        
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
+                    print('fre < fcl')        
+                if(fre >= fcl):
+                    print('fre >= fcl')
                 else:
-                    print('f(range_end) < f(cl)')    
+                    print('fre < fcl')    
                 print('I reach here')
                 return 0
             i+= 1
@@ -231,68 +235,72 @@ def not_unimodal_bisection(range_begin, range_end):
             Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
+            frb = f(range_begin)
+            fre = f(range_end)
+            fcl = f(cl)
+            fcr = f(cr)              
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+            if ((frb >= fcl) and (frb >= fre) and (fcl <= fcr)) :
                 print ("1")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)) :
                 print ("2")
                 range_begin =  cl
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl >= fcr)):
                 print ("3")
                 range_begin = cl    
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)):
                 print ("4")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("5")
                 range_end = cr
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("6")
                 range_end = cr                    
-            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+            elif (fre < fcl) and (fcr> frb):
                 print ("7")
                 not_unimodal_bisection(range_begin, cl)
                 not_unimodal_bisection(cr, range_end)
                 not_unimodal_bisection(cl, cr)
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl <= fcr)):
                 print ("8")
                 range_begin = cl              
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) > f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl > fcr)):
                 print ("9")
                 range_end = cr                    
             else:
                 print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                if(f(range_begin) >= f(cl)):
-                    print('f(range_begin) >= f(cl)')
+                if(frb >= fcl):
+                    print('frb >= fcl')
                 else:
-                    print('f(range_begin) < f(cl)')
-                if(f(range_begin) >= f(range_end)):
-                    print('f(range_begin) >= f(range_end)')
+                    print('frb < fcl')
+                if(frb >= fre):
+                    print('frb >= fre')
                 else:
-                    print('f(range_begin) < f(range_end)')
-                if(f(cl) <= f(cr)):
-                    print('f(cl) <= f(cr)')
+                    print('frb < fre')
+                if(fcl <= fcr):
+                    print('fcl <= fcr')
                 else:
-                    print('f(cl) > f(cr)')
+                    print('fcl > fcr')
                 
                 print('That is how far i go')
-                if(f(range_begin) <= f(cr)):
-                    print('f(range_begin) <= f(cr)')
+                if(frb <= fcr):
+                    print('frb <= fcr')
                 else:
-                    print('f(range_begin) > f(cr)')
-                if(f(range_end) <= f(cr)):
-                    print('f(range_end) <= f(cr)')
+                    print('frb > fcr')
+                if(fre <= fcr):
+                    print('fre <= fcr')
                 else:
-                    print('f(range_end) > f(cr)')          
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
+                    print('fre > fcr')          
+                if(fre >= fcl):
+                    print('fre >= fcl')
                 else:
-                    print('f(range_end) < f(cl)')        
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
+                    print('fre < fcl')        
+                if(fre >= fcl):
+                    print('fre >= fcl')
                 else:
-                    print('f(range_end) < f(cl)')    
+                    print('fre < fcl')    
                 print('I reach here')
                 return 0
 
@@ -329,8 +337,7 @@ def bisection():
             delta = distance / 4
             cl = 0.5 * (range_begin + range_end) - delta
             cr = 0.5 * (range_begin + range_end) + delta               
-            #c = (range_begin + range_end)/2.0
-            prod = f(range_begin)*f(c)
+
             Label(frame, text = "Processing ").grid(row = 5, column = 2 )
             Label(frame, text =  i).grid(row = grid + 3, column = column)
             Label(frame, text = "Range begin: ").grid(row = grid, column = column)
@@ -339,47 +346,53 @@ def bisection():
             Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
-            ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+            frb = f(range_begin)
+            fre = f(range_end)
+            fcl = f(cl)
+            fcr = f(cr)
+            if ((frb >= fcl) and (frb >= fre) and (fcl <= fcr)) :
                 print ("1")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)) :
                 print ("2")
                 range_begin =  cl
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl >= fcr) and (frb <= fcr)):
                 print ("3")
-                range_begin = cl    
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                range_end = cr
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)):
                 print ("4")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("5")
                 range_end = cr
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("6")
-                range_end = cr                    
-            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+                range_end = cr
+            elif (fre < fcl) and (fcr> frb):
                 print ("7")
                 not_unimodal_bisection(range_begin, cl)
                 not_unimodal_bisection(cr, range_end)
                 not_unimodal_bisection(cl, cr)
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl <= fcr)):
                 print ("8")
-                range_begin = cl              
+                range_begin = cl
+            elif ((frb >= fcl) and (frb < fre) and (fcl > fcr)):
+                print ("9")
+                range_end = cr
             else:
                 print('Im going into else')
-                if(f(range_begin) >= f(cl)):
-                    print('f(range_begin) >= f(cl)')
+                if(frb >= fcl):
+                    print('frb >= fcl')
                 else:
-                    print('f(range_begin) < f(cl)')
-                if(f(range_begin) >= f(range_end)):
-                    print('f(range_begin) >= f(range_end)')
+                    print('frb < fcl')
+                if(frb >= fre):
+                    print('frb >= fre')
                 else:
-                    print('f(range_begin) < f(range_end)')
-                if(f(cl) <= f(cr)):
-                    print('f(cl) <= f(cr)')
+                    print('frb < fre')
+                if(fcl <= fcr):
+                    print('fcl <= fcr')
                 else:
-                    print('f(cl) > f(cr)')
+                    print('fcl > fcr')
             i+= 1
             if(grid <= 13):
                 grid += 4
@@ -419,67 +432,41 @@ def bisection():
             Label(frame, text = round(range_end,2)).grid(row = grid + 1, column = column + 1)    
             Label(frame, text = "___________").grid(row = grid + 2, column = column + 1)
             Label(frame, text = "___________").grid(row = grid + 2, column = column)
+            frb = f(range_begin)
+            fre = f(range_end)
+            fcl = f(cl)
+            fcr = f(cr)              
             ##print ("range_begin ", (range_begin), " range_end ", str(range_end))
-            if ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) <= f(cr))) :
+            if ((frb >= fcl) and (frb >= fre) and (fcl <= fcr)) :
                 print ("1")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))) :
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)) :
                 print ("2")
                 range_begin =  cl
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) >= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl >= fcr) and (frb <= fcr)):
                 print ("3")
-                range_begin = cl    
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) >= f(range_end)) and (f(cl) >= f(cr))):
+                range_end = cr
+            elif ((frb >= fcl) and (frb >= fre) and (fcl >= fcr)):
                 print ("4")
                 range_begin = cl
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("5")
                 range_end = cr
-            elif ((f(range_begin) <= f(cl)) and (f(range_begin) <= f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb <= fcl) and (frb <= fre) and (fcl <= fcr)):
                 print ("6")
                 range_end = cr                    
-            elif (f(range_end) < f(cl)) and (f(cr) > f(range_begin)):
+            elif (fre < fcl) and (fcr> frb):
                 print ("7")
                 not_unimodal_bisection(range_begin, cl)
                 not_unimodal_bisection(cr, range_end)
                 not_unimodal_bisection(cl, cr)
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) <= f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl <= fcr)):
                 print ("8")
                 range_begin = cl     
-            elif ((f(range_begin) >= f(cl)) and (f(range_begin) < f(range_end)) and (f(cl) > f(cr))):
+            elif ((frb >= fcl) and (frb < fre) and (fcl > fcr)):
                 print ("9")
                 range_end = cr                            
             else:
-                print('Im going into else!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                if(f(range_begin) >= f(cl)):
-                    print('f(range_begin) >= f(cl)')
-                else:
-                    print('f(range_begin) < f(cl)')
-                if(f(range_begin) >= f(range_end)):
-                    print('f(range_begin) >= f(range_end)')
-                else:
-                    print('f(range_begin) < f(range_end)')
-                if(f(cl) <= f(cr)):
-                    print('f(cl) <= f(cr)')
-                else:
-                    print('f(cl) > f(cr)')
-                if(f(range_begin) <= f(cr)):
-                    print('f(range_begin) <= f(cr)')
-                else:
-                    print('f(range_begin) > f(cr)')
-                if(f(range_end) <= f(cr)):
-                    print('f(range_end) <= f(cr)')
-                else:
-                    print('f(range_end) > f(cr)')          
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
-                else:
-                    print('f(range_end) < f(cl)')        
-                if(f(range_end) >= f(cl)):
-                    print('f(range_end) >= f(cl)')
-                else:
-                    print('f(range_end) < f(cl)')    
-                print('I reach here')
                 return 0
 
             i+=1

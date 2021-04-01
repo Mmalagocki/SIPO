@@ -35,13 +35,13 @@ def makeListFromFmax(Fmax):
     b = 1 # pierwszy element
     t = 0 # element pomocniczy
     list = [a,b]
-
+    
     while list[-1]<Fmax:
         t = b
         b = a+b
         a = t
         list.append(b)
-
+    
     return list
 
 def func(x):
@@ -64,22 +64,22 @@ def computeFibOpt():
     Fmax = calculateFmax(e,a,b)
     listFibonacci = makeListFromFmax(Fmax)
     oN = len(listFibonacci)-2
-	
-	Label(frame, text= ("Optimal n = ", oN)).grid(row=9)
-	
-    i = float(1)
-
+        
+    Label(frame, text= ("Optimal n = ", oN)).grid(row=9)
+        
+    i = int(1)
+    
     #pierwsza iteracja
     x1 = leftBound(a,b,oN,i,listFibonacci)
     x2 = rightBound(a,b,oN,i,listFibonacci)
     grid = 6
-	
-	fx1 = func(x1)
+        
+    fx1 = func(x1)
     fx2 = func(x2)
-
+    
     while(abs(a-b)>e and i<=oN):
         i=i+1
-        
+
         
         Label(frame, text="Processing:").grid(row = 5, column = 2)
         Label(frame, text= (" a = ", round(a, 2)) ).grid(row = grid, column = 2)
@@ -91,23 +91,23 @@ def computeFibOpt():
         if(fx1 < fx2):
             b = x2
             x2 = x1
-			fx2 = fx1
+            fx2 = fx1
             x1 = leftBound(a,b,oN,i,listFibonacci)
-			fx1 = func(x1)
+            fx1 = func(x1)
         elif (fx1 >= fx2):
             a = x1
             x1 = x2
             x2 = rightBound(a,b,oN,i,listFibonacci)
-			fx1 = fx2
-			fx2 = func(x2)
-        grid += 5
-            
-    Label(frame, text="Results:").grid(row=5)
-    Label(frame, text= (" a = ", round(a, 2)) ).grid(row=6)
-    Label(frame, text= (" b = ", round(b, 2)) ).grid(row=7)
-    Label(frame, text= (" c = ", round(i, 2)) ).grid(row=8)
-  
-    return [a,b,i]
+            fx1 = fx2
+            fx2 = func(x2)
+            grid += 5
+                
+        Label(frame, text="Results:").grid(row=5)
+        Label(frame, text= (" a = ", round(a, 2)) ).grid(row=6)
+        Label(frame, text= (" b = ", round(b, 2)) ).grid(row=7)
+        Label(frame, text= (" c = ", round(i, 2)) ).grid(row=8)
+        
+        return [a,b,i]
 
 #print(func2(2.642))
 
